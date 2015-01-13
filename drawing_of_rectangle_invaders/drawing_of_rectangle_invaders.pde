@@ -6,18 +6,21 @@ void setup(){
   for(int i=0; i<50; i++){
     float r=random(1);
     if(r>.5){
-      gridOfEnemies.add(new Enemy(10+x*10,10+y*10));
-    } else {
-      gridOfEnemies.add(new Enemy(random(width),random(height/2)));
+      gridOfEnemies.add(new SquareEnemy(random(width),random(height/2)));
     }
+    if(r>.33){
+      gridOfEnemies.add(new RoundEnemy(random(width),random(height/2)));
+    }
+    if(r<.5){
+      gridOfEnemies.add(new TriEnemy(random(width),random(height/2)));
   }
    for(int x=0;x<columns;x++){
     for(int y=0;y<rows;y++){
-      gridOfEnemies.add(new Enemy((width/columns)*.5+x*width/columns, 25+y *50));
+      gridOfEnemies.add(new Enemy(10+x*10,10+y*10));
     }
   }
 }
-
+}
 void draw(){
   background(0);
   for (int i=0; i< gridOfEnemies.size(); i++){
@@ -34,6 +37,7 @@ class Enemy{
   float sz;
   boolean square;
   boolean circle;
+  boolean triangle;
   
   Enemy(float x, float y){
     loc = new PVector(x,y);
@@ -60,6 +64,7 @@ class SquareEnemy extends Enemy{
     super(x,y);
     square=true;
     circle=false;
+    triangle=false;
   }
   
   void display(){
@@ -73,10 +78,23 @@ class RoundEnemy extends Enemy {
     super(x,y);
     circle=true;
     square=false;
+    triangle=false;
   }
   void display(){
     ellipse(loc.x,loc.y,sz,sz);
   }
 }
 
+class TriEnemy extends Enemy {
+  TriEnemy(float x,float y){
+    super(x,y);
+    circle=false;
+    square=false;
+    triangle=true;
+  }
+  
+  void display(){
+    triangle(loc.x,loc.y-sz/2,loc.x-sz/2,loc.y+sz/2,loc.x+sz/2,loc.y+sz/2);
+  }
+}
 
