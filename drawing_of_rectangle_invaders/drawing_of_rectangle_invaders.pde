@@ -172,14 +172,8 @@ class Shooter {
       }
   }
 }
-//
-//
-// // boolean fires() {
-//    //after aiming, player fires and tries to hit enemy
-//  }
-//
 // // void dies() {
-//    //if row of invaders comes within line of shooter, shooter dies
+//    //if(enemy touches shooter, 
 //
 //
 //
@@ -208,4 +202,35 @@ class Bullet {
     y-=vel;
   }
 }
+
+
+//
+//  //ball bounce off right paddle
+//  if (x+sz/2 >= rightX && y >= rightY && y <= rightY + paddleHeight)
+//  {
+// //make ball switch directions
+//    xspeed=-abs(xspeed);
+// //make ball turn color of paddle
+//ballColor=color(0,0,255);
+//  }
+//  //check if ball touches right wall, restart at center
+//  if (x+sz/2>=width) {
+//    x=width/2;
+//    y=height/2;
+//    //increase left paddle score
+//    text2++;
+//    //reset ball color
+//    ballColor = (255);
+//    fill(255,0,0);
+// //indicate left paddle player scored
+//    text("SCORE!",width/2-70,height/2);
+//  }
+//  //check if ball touches left wall, restart at center
+//  if (x-sz/2<=0) {
+//    x=width/2;
+//    y=height/2;
+//    //increase right paddle score
+//    text1++;
+//    //reset ball color
+//    ballColor = (255);
 
