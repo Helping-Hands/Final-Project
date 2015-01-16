@@ -6,7 +6,6 @@ int columns=10;
 int eSpacing = 100;
 void setup() {
   size(displayWidth, displayHeight);
-
   //put all enemies into a grid of 5 by 10
   for (int x=0; x<columns; x++) {
     for (int y=0; y<rows; y++) {
@@ -29,6 +28,9 @@ void draw() {
     Enemy e=gridOfEnemies.get(i);
     e.display();
     e.move();
+    textSize(50);
+     fill(0,250,0);
+    text("SHOOT ALL GREEN SQUARES",displayWidth/2-350,displayHeight-700);
   }
 }
 
