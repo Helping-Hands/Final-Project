@@ -5,7 +5,7 @@ int rows=5;
 int columns=10;
 int eSpacing = 100;
 //shooter and bullet
-Bullet bullet;
+ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 Shooter shooter;
 void setup() {
   size(displayWidth, displayHeight);
@@ -23,7 +23,6 @@ void setup() {
     }
   }
   shooter=new Shooter();
-  bullet=new Bullet();
 }
 void draw() {
   //move and display the enemies
@@ -34,13 +33,22 @@ void draw() {
     e.display();
     e.move();
     textSize(50);
-//    fill(0, 250, 0);
-//    text("SHOOT ALL GREEN SQUARES", displayWidth/2-350, displayHeight-700);
+    //    fill(0, 250, 0);
+    //    text("SHOOT ALL GREEN SQUARES", displayWidth/2-350, displayHeight-700);
   }
   shooter.display();
   shooter.aim();
-  bullet.display();
-  bullet.move();
+  for (int i = bullets.size ()-1; i >= 0; i--) {
+    Bullet b = bullets.get(i);
+    b.display();
+    b.move();
+  }
+}
+
+void keyPressed() {
+  if (key == ' ') {
+    bullets.add(new Bullet(shooter));
+  }
 }
 
 
@@ -102,7 +110,6 @@ class RoundEnemy extends Enemy {
     ellipse(loc.x, loc.y, sz, sz);
   }
   // void hit(){
-
 }
 //extend Enemy to create triangle enemy
 class TriEnemy extends Enemy {
@@ -124,41 +131,46 @@ class TriEnemy extends Enemy {
 
 class Shooter {
   //declare variables
- int sz;
-int x;
-int y;
-float movingX;
+  int h;
+  int x;
+  int y;
+  int w1, w2, w3;
+
 
   Shooter() {
     //intialize variables and location
-     movingX=width/2;
-     sz=30;
-     x=700;
-     y=50;
+
+    h =30;
+    x=width/2;
+    y=height-50;
+    w1 = 200;
+    w2 = 75;
+    w3 = 50;
   }
 
 
   void display() {
     //insert block of shooter (player)
-     noStroke();
-    //top
-  rect(movingX/2-55.6, x-30, y, sz);
+    noStroke();
+    //bottom
+    rect(x, y, w1, h);
     //middle
-  rect(movingX/2-100, x+30, y*2.75, sz);
-  //bottom
-  rect (movingX/2-75, x, y*1.75, sz);
+    rect(x, y-h, w2, h);
+    //top
+    rect (x, y-2*h, w3, h);
   }
 
   void aim() {
     //aims shooter, moves about 5
     //moves left if left arrow key is pressed
     //moves right if right arrow key is pressed
-     if (keyPressed )
-    if (keyCode== LEFT) {
-      movingX-= 10;
-    } else if (keyCode==RIGHT) {
-      movingX+=10;
-    }
+    if (keyPressed )
+      if (keyCode== LEFT) {
+        x-= 10;
+      } else if (keyCode==RIGHT) {
+        x+=10;
+      }
+  }
 }
 //
 //
@@ -172,30 +184,28 @@ float movingX;
 //
 //
 /////////////////////////////////class bullet////////////////////////////
-class Bullet{
+class Bullet {
   //declare variables
-  float shoot;
-int vel;
-float movingX;
-  Bullet() {
+  float y;
+  int vel;
+  float x;
+  Bullet(Shooter ship) {
     //intialize variables and location
-   shoot=685;
-   vel=10;
-   movingX=width/2;
+    y=ship.y;
+    vel=10;
+    x=ship.x;
   }
 
   void display() {
     //display bullet, but have bullet start inside of shooter
- ellipse(movingX/2-55.6/2,shoot,5,5);
+    ellipse(x, y, 5, 5);
   }
 
 
   void move() {
     //bullet is moved toward invaders after it is released
-    if(key==' '){
-        shoot-=vel;
+
+    y-=vel;
   }
-  }
-}
 }
 
