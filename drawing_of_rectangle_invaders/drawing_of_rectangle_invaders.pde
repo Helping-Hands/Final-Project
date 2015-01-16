@@ -4,6 +4,9 @@ ArrayList<Enemy> gridOfEnemies= new ArrayList<Enemy>();
 int rows=5;
 int columns=10;
 int eSpacing = 100;
+//shooter and bullet
+Bullet bullet;
+Shooter shooter;
 void setup() {
   size(displayWidth, displayHeight);
   //put all enemies into a grid of 5 by 10
@@ -19,6 +22,8 @@ void setup() {
       }
     }
   }
+  shooter=new Shooter();
+  bullet=new Bullet();
 }
 void draw() {
   //move and display the enemies
@@ -29,9 +34,13 @@ void draw() {
     e.display();
     e.move();
     textSize(50);
-     fill(0,250,0);
-    text("SHOOT ALL GREEN SQUARES",displayWidth/2-350,displayHeight-700);
+//    fill(0, 250, 0);
+//    text("SHOOT ALL GREEN SQUARES", displayWidth/2-350, displayHeight-700);
   }
+  shooter.display();
+  shooter.aim();
+  bullet.display();
+  bullet.move();
 }
 
 
@@ -92,6 +101,8 @@ class RoundEnemy extends Enemy {
     fill(250, 0, 0);
     ellipse(loc.x, loc.y, sz, sz);
   }
+  // void hit(){
+
 }
 //extend Enemy to create triangle enemy
 class TriEnemy extends Enemy {
@@ -107,5 +118,84 @@ class TriEnemy extends Enemy {
     fill(0, 0, 250);
     triangle(loc.x, loc.y-sz/2, loc.x-sz/2, loc.y+sz/2, loc.x+sz/2, loc.y+sz/2);
   }
+}
+
+////////////////////////shooter/player/////////////////////////
+
+class Shooter {
+  //declare variables
+ int sz;
+int x;
+int y;
+float movingX;
+
+  Shooter() {
+    //intialize variables and location
+     movingX=width/2;
+     sz=30;
+     x=700;
+     y=50;
+  }
+
+
+  void display() {
+    //insert block of shooter (player)
+     noStroke();
+    //top
+  rect(movingX/2-55.6, x-30, y, sz);
+    //middle
+  rect(movingX/2-100, x+30, y*2.75, sz);
+  //bottom
+  rect (movingX/2-75, x, y*1.75, sz);
+  }
+
+  void aim() {
+    //aims shooter, moves about 5
+    //moves left if left arrow key is pressed
+    //moves right if right arrow key is pressed
+     if (keyPressed )
+    if (keyCode== LEFT) {
+      movingX-= 10;
+    } else if (keyCode==RIGHT) {
+      movingX+=10;
+    }
+}
+//
+//
+// // boolean fires() {
+//    //after aiming, player fires and tries to hit enemy
+//  }
+//
+// // void dies() {
+//    //if row of invaders comes within line of shooter, shooter dies
+//
+//
+//
+/////////////////////////////////class bullet////////////////////////////
+class Bullet{
+  //declare variables
+  float shoot;
+int vel;
+float movingX;
+  Bullet() {
+    //intialize variables and location
+   shoot=685;
+   vel=10;
+   movingX=width/2;
+  }
+
+  void display() {
+    //display bullet, but have bullet start inside of shooter
+ ellipse(movingX/2-55.6/2,shoot,5,5);
+  }
+
+
+  void move() {
+    //bullet is moved toward invaders after it is released
+    if(key==' '){
+        shoot-=vel;
+  }
+  }
+}
 }
 
