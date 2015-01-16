@@ -1,5 +1,31 @@
-int l=20;
-noStroke();
-rect (l+10,l,l+10,l-10);
-rect(l+17,l-10,l-5,l-10);
-rect(l,l+10,l+30,l-10);
+int sz=30;
+int x=700;
+int y=50;
+float movingX;
+Bullet bullet;
+void setup() {
+  size (displayWidth, displayHeight);
+  movingX=width/2;
+  bullet=new Bullet();
+}
+void draw() {
+  background (0);
+  noStroke();
+  bullet.display();
+  bullet.move();
+  //top
+  rect(movingX/2-55.6, x-30, y, sz);
+  //bottom
+  rect (movingX/2-75, x, y*1.75, sz);
+  //middle
+  rect(movingX/2-100, x+30, y*2.75, sz);
+
+
+  if (keyPressed )
+    if (keyCode== LEFT) {
+      movingX-= 10;
+    } else if (keyCode==RIGHT) {
+      movingX+=10;
+    }
+}
+
