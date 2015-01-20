@@ -1,3 +1,9 @@
+/////////////if enemies touch shooter, shooter dies, game over
+////////////weird screen thing out of whack
+///////////do next 4 levels
+//////////title screens
+/////////change to winner/loser screens
+////////change levels
 //drawing an array of enemies
 ArrayList<Enemy> gridOfEnemies= new ArrayList<Enemy>();
 //grid of enemies, 5 rows by 10 columns
@@ -7,6 +13,7 @@ int eSpacing = 100;
 //shooter and bullet
 ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 Shooter shooter;
+float enemySpeed=1;
 void setup() {
   size(displayWidth, displayHeight);
   //put all enemies into a grid of 5 by 10
@@ -31,33 +38,38 @@ void draw() {
   for (int i=0; i< gridOfEnemies.size (); i++) {
     Enemy e=gridOfEnemies.get(i);
     e.display();
-    e.move();
-    textSize(50);
-    //    fill(0, 250, 0);
-    //    text("SHOOT ALL GREEN SQUARES", displayWidth/2-350, displayHeight-700);
+    e.move(enemySpeed);
+    for (int j = bullets.size ()-1; j >= 0; j--) {
+      Bullet b = bullets.get(j);
+      if (e.dies(b)) {
+        if (e.square==true) {
+          gridOfEnemies.remove(i);
+          bullets.remove(j);
+        } else {
+          enemySpeed+=2;
+          bullets.remove(j);
+        }
+      }
+    }
   }
 
   shooter.display();
   shooter.aim();
   shooter.stayOnScreen();
-  for (int i = bullets.size ()-1; i >= 0; i--) {
-    Bullet b = bullets.get(i);
+
+  for (int j = bullets.size ()-1; j >= 0; j--) {
+    Bullet b = bullets.get(j);
     b.display();
     b.move();
     b.isDead();
   }
 }
 
+
 void keyPressed() {
   if (key == ' ') {
     bullets.add(new Bullet(shooter));
   }
 }
-
-
-
-
-
-
 
 

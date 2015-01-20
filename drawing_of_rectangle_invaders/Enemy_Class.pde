@@ -6,22 +6,31 @@ class Enemy {
   boolean square;
   boolean circle;
   boolean triangle;
+//  float speed;
   //what an enemy needs, location and size
   Enemy(float x, float y) {
     loc = new PVector(x, y);
     sz=20;
+//    speed=1;
   }
   //still have to have void display for the general Enemy class
   void display() {
   }
   //how all enemies will move
-  void move() {
+  void move(float speed) {
     if (frameCount%60==0) {
-      loc.x+=sz;
+      loc.x+=sz*speed;
     }
     if (loc.x>width) {
       loc.x=0;
-      loc.y+=sz;
+      loc.y+=sz*speed;
+    }
+  }
+  boolean dies(Bullet b) {
+    if (loc.dist(b.loc)<sz/2+b.sz/2) {
+      return true;
+    } else {
+      return false;
     }
   }
 }
@@ -40,13 +49,6 @@ class SquareEnemy extends Enemy {
     rectMode(CENTER);
     rect(loc.x, loc.y, sz, sz);
   }
-//  boolean dies(Bullet b) {
-//    if(loc.dist(bullet.loc)<sz/2+bullet.sz/2){
-//      return true;
-//    } else {
-//      return false;
-//    }
-//  }
 }
 //extend Enemy to create round enemy
 class RoundEnemy extends Enemy {
@@ -79,3 +81,4 @@ class TriEnemy extends Enemy {
     triangle(loc.x, loc.y-sz/2, loc.x-sz/2, loc.y+sz/2, loc.x+sz/2, loc.y+sz/2);
   }
 }
+
