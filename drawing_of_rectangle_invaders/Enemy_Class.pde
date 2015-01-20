@@ -6,6 +6,7 @@ class Enemy {
   boolean square;
   boolean circle;
   boolean triangle;
+  int row;
 //  float speed;
   //what an enemy needs, location and size
   Enemy(float x, float y) {
@@ -18,7 +19,7 @@ class Enemy {
   }
   //how all enemies will move
   void move(float speed) {
-    if (frameCount%60==0) {
+    if (frameCount%20==0) {
       loc.x+=sz*speed;
     }
     if (loc.x>width) {
@@ -37,11 +38,12 @@ class Enemy {
 //extend Enemy to create square enemy
 class SquareEnemy extends Enemy {
   //taking what SquareEnemy needs from Enemy class
-  SquareEnemy(float x, float y) {
+  SquareEnemy(float x, float y, int tempRow) {
     super(x, y);
     square=true;
     circle=false;
     triangle=false;
+    row=tempRow;
   }
   //display square enemy
   void display() {

@@ -53,8 +53,6 @@ class Shooter {
       }
   }
 }
-// // void dies() {
-//    //if(enemy touches shooter, 
-//
-//
-//
+
+//void dies(){
+//  if(gridOfEnemies
