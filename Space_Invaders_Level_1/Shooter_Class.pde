@@ -10,7 +10,6 @@ class Shooter {
 
   Shooter() {
     //intialize variables and location
-
     h =30;
     x=width/2;
     y=height-50;
@@ -31,12 +30,12 @@ class Shooter {
     //top
     rect (x, y-2*h, w3, h);
   }
-  
-  void stayOnScreen(){
-    if(x+h>=width){
+//shooter doesn't move past either side of screen
+  void stayOnScreen() {
+    if (x+h>=width) {
       x=width-w1;
     }
-    if(x+h<=0){
+    if (x+h<=0) {
       x=0+w1;
     }
   }
@@ -47,12 +46,14 @@ class Shooter {
     //moves right if right arrow key is pressed
     if (keyPressed )
       if (keyCode== LEFT) {
-        x-= 10;
+        x-=5;
       } else if (keyCode==RIGHT) {
-        x+=10;
+        x+=5;
       }
   }
 }
 
 //void dies(){
-//  if(gridOfEnemies
+//  if(gridOfEnemies touches shooter){
+  //goes to GAME OVER screen
+

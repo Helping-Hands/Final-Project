@@ -7,12 +7,12 @@ class Enemy {
   boolean circle;
   boolean triangle;
   int row;
-//  float speed;
+  //float speed;
   //what an enemy needs, location and size
   Enemy(float x, float y) {
     loc = new PVector(x, y);
     sz=20;
-//    speed=1;
+    //    speed=1;
   }
   //still have to have void display for the general Enemy class
   void display() {
@@ -27,9 +27,11 @@ class Enemy {
       loc.y+=sz*speed;
     }
   }
+  //if bullet hits enemy, enemy dies
   boolean dies(Bullet b) {
     if (loc.dist(b.loc)<sz/2+b.sz/2) {
       return true;
+      //if not hit by bullet, enemy doesn't die
     } else {
       return false;
     }
@@ -40,6 +42,7 @@ class SquareEnemy extends Enemy {
   //taking what SquareEnemy needs from Enemy class
   SquareEnemy(float x, float y, int tempRow) {
     super(x, y);
+    //enemy is a square
     square=true;
     circle=false;
     triangle=false;
@@ -57,6 +60,7 @@ class RoundEnemy extends Enemy {
   //taking what RoundEnemy needs from Enemy class
   RoundEnemy(float x, float y) {
     super(x, y);
+    //enemy is a circle
     circle=true;
     square=false;
     triangle=false;
@@ -73,6 +77,7 @@ class TriEnemy extends Enemy {
   //taking what TriEnemy needs from Enemy class
   TriEnemy(float x, float y) {
     super(x, y);
+    //enemy is a triangle
     circle=false;
     square=false;
     triangle=true;
