@@ -17,7 +17,7 @@ Shooter shooter;
 //how quickly enemies move
 float enemySpeed=1;
 //mistake=you hit a wrong enemy
-boolean mistake=false;
+boolean dunGoofed=false;
 void setup() {
   //size of screen
   size(displayWidth, displayHeight);
@@ -42,9 +42,9 @@ void draw() {
   //move and display the enemies
   background(0);
   //if shooter makes mistake, mistake=true, enemies speed up
-//    if(mistake==true){
+//    if(dunGoofed==true){
 //     enemySpeed+=.1;
-//     mistake=false;
+//     dunGoofed=false;
 //    }
   //drawing the enemies in a grid
   //display and move enemies
@@ -74,20 +74,28 @@ void draw() {
             Enemy otherEnemy = gridOfEnemies.get(k);
             //if otherEnemy is a square
             if(otherEnemy.square==true){
-              //then there are square enemies left
-              areThereAnyLeft=true;
-            }
-            //identify row of enemy just removed *
+              if(otherEnemy.row=justRemoved.row){
+                if(another enemy in row is square){
+                  areThereAnyLeft=true;
+                  so don't do anything
+                } else if(no enemies in row are squares){
+                  areThereAnyLeft=false;
+                }
+                if(areThereAnyLeft=false){
+                  otherEnemy.row.remove(k);
+                //identify row of enemy just removed *
             //for every enemy in arraylist,check to see if square
             //yes=check what row
             //row=same just removed
             //int areThereAnyLeft
-            //areThereAnyLeft=
+            //areThereAnyLeft=false
+            //areThereAnyLeft=true..don't do anything
+            //areThereAnyLeft=false...remove everything w same row value
           
          // println(y);
         } else {
           //hit wrong enemy
-          mistake=true;
+          dunGoofed=true;
           //remove bullet
           bullets.remove(j);
         }
