@@ -19,6 +19,11 @@ float enemySpeed=1;
 //mistake=you hit a wrong enemy
 boolean dunGoofed=false;
 void setup() {
+  //checkForSurvivors(0);
+  //checkForSurvivors(1);
+  //checkForSurvivors(2);
+  //checkForSurvivors(3);
+  //checkForSurvivors(4);
   //size of screen
   size(displayWidth, displayHeight);
   //put all enemies into a grid of 5 by 10
