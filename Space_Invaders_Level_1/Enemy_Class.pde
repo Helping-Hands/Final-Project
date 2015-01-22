@@ -24,8 +24,8 @@ class Enemy {
       loc.x+=sz*speed;
     }
     if (loc.x>width) {
-      loc.x=0;
-      loc.y+=sz*speed;
+      loc.x -= width;
+      loc.y+=sz*2;
     }
   }
   //if bullet hits enemy, enemy dies

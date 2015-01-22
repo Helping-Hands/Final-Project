@@ -43,10 +43,11 @@ void draw() {
   //move and display the enemies
   background(0);
   //if shooter makes mistake, mistake=true, enemies speed up
-  //    if(dunGoofed==true){
-  //     enemySpeed+=.1;
-  //     dunGoofed=false;
-  //    }
+    if(dunGoofed==true){
+     enemySpeed+=.1;
+    dunGoofed=false;
+    }
+    
   //drawing the enemies in a grid
   //display and move enemies
   for (int i= 0; i < gridOfEnemies.size (); i++) {
@@ -57,18 +58,21 @@ void draw() {
     for (int j = bullets.size ()-1; j >= 0; j--) {
       Bullet b = bullets.get(j);
       if (e.dies(b)) {
+          //remove bullet that just hit enemy
+          bullets.remove(j);
         //check if it's a square enemy
         if (e.square==true) {
 
 
-          //remove bullet that just hit enemy
-          bullets.remove(j); 
+         
           //find row of enemy that was just removed
           int justRemoved = e.row;
           //remove enemy that was hit
           gridOfEnemies.remove(i);
           println("Time to check for survivors:");
           checkForSurvivors(justRemoved);
+        } else {
+          dunGoofed=true;
         }
       }
     }
