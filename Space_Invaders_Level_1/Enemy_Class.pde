@@ -9,9 +9,10 @@ class Enemy {
   int row;
   //float speed;
   //what an enemy needs, location and size
-  Enemy(float x, float y) {
+  Enemy(float x, float y, int tempRow) {
     loc = new PVector(x, y);
     sz=20;
+    row = tempRow;
     //    speed=1;
   }
   //still have to have void display for the general Enemy class
@@ -41,12 +42,12 @@ class Enemy {
 class SquareEnemy extends Enemy {
   //taking what SquareEnemy needs from Enemy class
   SquareEnemy(float x, float y, int tempRow) {
-    super(x, y);
+    super(x, y, tempRow);
     //enemy is a square
     square=true;
     circle=false;
     triangle=false;
-    row=tempRow;
+    
   }
   //display square enemy
   void display() {
@@ -58,8 +59,8 @@ class SquareEnemy extends Enemy {
 //extend Enemy to create round enemy
 class RoundEnemy extends Enemy {
   //taking what RoundEnemy needs from Enemy class
-  RoundEnemy(float x, float y) {
-    super(x, y);
+  RoundEnemy(float x, float y, int tempRow) {
+    super(x, y, tempRow);
     //enemy is a circle
     circle=true;
     square=false;
@@ -75,8 +76,8 @@ class RoundEnemy extends Enemy {
 //extend Enemy to create triangle enemy
 class TriEnemy extends Enemy {
   //taking what TriEnemy needs from Enemy class
-  TriEnemy(float x, float y) {
-    super(x, y);
+  TriEnemy(float x, float y, int tempRow) {
+    super(x, y, tempRow);
     //enemy is a triangle
     circle=false;
     square=false;
