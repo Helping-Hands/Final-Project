@@ -4,9 +4,9 @@ PVector[] loc = new PVector[count];
 PVector[] vel = new PVector[count];
 PVector[] acc = new PVector[count];
 float[] sz = new float[count];
-
+float spin = 0.0;
 void setup() {
-  size(displayWidth, displayHeight);
+  size(displayWidth, displayHeight, P3D);
   background(0);
   textMode(CENTER);
   font=loadFont("Txt_IV50-48.vlw");
@@ -15,21 +15,34 @@ void setup() {
     loc[i] = new PVector(random(sz[i], width-sz[i]), random(sz[i], height-sz[i])); 
     vel[i] = new PVector(0,random(0,5));       
     acc[i] = new PVector(0, 0);
+   
   }
 }
 
 void draw() {
-  textFont(font, 32);
-  fill(0, 255, 85);
-  textSize(100);
-  text("Shape Invaders", 280, 425);
-  textSize (24);
-  text("PRESS SPACE BAR TO START" ,525, 485);
-  noStroke();
-  fill(0,0,20,20);
-  rect(0,0,width,height);
+  background(0);
+ noStroke();
+   
+pushMatrix();
 
-  for (int i = 0; i < count; i++) {  
+  translate(width/2, height/2-300, 0);
+  spin +=0.009;
+  rotateX(PI/10);
+  rotateY(PI/20 + spin);
+  textFont(font, 22);
+  fill(0, 80, 85);
+  textSize(150);
+  noStroke();
+  text("WINNER", 200, 125);
+  textSize(65);
+  text("THE END ", 268, 220);
+noStroke();
+popMatrix();
+
+
+fill(0,0,20,20);
+rect(0,0,width,height);
+for (int i = 0; i < count; i++) {  
 
     vel[i].add(acc[i]);
     loc[i].add(vel[i]);
@@ -69,6 +82,8 @@ void draw() {
 
 void mouseReleased() {
   loc[0].set(mouseX, mouseY);
+
+
+
 }
-
-
+  
