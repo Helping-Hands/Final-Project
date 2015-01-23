@@ -4,5 +4,5 @@ textSize (50);
 text (" Level Three", 650,400);
 fill (0,200,100);
 text( "Directions: Hit all triangles with shooter", 300,500);
-
+text("PRESS SPACE BAR TO CONTINUE",350,576);
 
