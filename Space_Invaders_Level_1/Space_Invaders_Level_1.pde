@@ -126,7 +126,7 @@ textSize (50);
 text (" Level One",width/2-200,200);
 fill (0,200,100);
 text( "Directions: Hit all squares with shooter",width/2-600,350);
-text ("PRESS SPACE BAR TO CONTINUE",width/2-450,500);
+text ("PRESS SPACE BAR TO CONTINUE",width/2-450,470);
   }
   else if  (running == 2) {      //do these things for level 1
     println("There are " + gridOfEnemies.size() + " enemies");
@@ -168,29 +168,6 @@ text ("PRESS SPACE BAR TO CONTINUE",width/2-450,500);
       }
     }
 
-    //      if (gridOfEnemies.enemy.loc.x>width) {
-    //        //display game over screen
-    //      }
-
-    //identify row of enemy just removed *
-    //for every enemy in arraylist,check to see if square
-    //yes=check what row
-    //row=same just removed
-    //int areThereAnyLeft
-    //areThereAnyLeft=false
-    //areThereAnyLeft=true..don't do anything
-    //areThereAnyLeft=false...remove everything w same row value
-
-      // println(y);
-    //else {
-    //  //hit wrong enemy
-    //  dunGoofed=true;
-    //  //remove bullet
-    //  bullets.remove(j);
-    //}
-
-
-
     //display shooter, aim, stayOnScreen
     shooter.display();
     shooter.aim();
@@ -204,6 +181,56 @@ text ("PRESS SPACE BAR TO CONTINUE",width/2-450,500);
     }
   }  //end code for level 1
 }
+if(running==3){
+  println("There are " + gridOfEnemies.size() + " enemies");
+    //move and display the enemies
+    background(0);
+    //if shooter makes mistake, mistake=true, enemies speed up
+    if (dunGoofed==true) {
+      enemySpeed+=.1;
+      dunGoofed=false;
+    }
+
+    //drawing the enemies in a grid
+    //display and move enemies
+    for (int i= 0; i < gridOfEnemies.size (); i++) {
+      Enemy e=gridOfEnemies.get(i);
+      e.display();
+      e.move(enemySpeed);
+      //checks each bullet, sees if any bullet hits an enemy
+      for (int j = bullets.size ()-1; j >= 0; j--) {
+        Bullet b = bullets.get(j);
+        if (e.dies(b)) {
+          //remove bullet that just hit enemy
+          bullets.remove(j);
+          //check if it's a square enemy
+          if (e.circle==true) {
+            //find row of enemy that was just removed
+            int justRemoved = e.row;
+            //remove enemy that was hit
+            gridOfEnemies.remove(i);
+            println("Time to check for survivors:");
+            checkForSurvivors(justRemoved);
+          } else {
+            dunGoofed=true;
+          }
+        }
+      }
+    }
+
+    //display shooter, aim, stayOnScreen
+    shooter.display();
+    shooter.aim();
+    shooter.stayOnScreen();
+    //display bullets, move, is dead
+    for (int j = bullets.size ()-1; j >= 0; j--) {
+      Bullet b = bullets.get(j);
+      b.display();
+      b.move();
+      b.isDead();
+    }
+}  //end code for level 1
+
 
 
 //if space bar is pressed, add more bullets
