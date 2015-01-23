@@ -119,9 +119,16 @@ void draw() {
       vel[i].y *= -1;
     }
   }
-}    else if (running == 1) {
-    text("test screen before level 1", width/2, height/2);
-  } else if (running == 2) {      //do these things for level 1
+////////////draw for direction screen   
+  }else if  (running == 1) {
+    background(0);
+textSize (50);
+text (" Level One",width/2-200,200);
+fill (0,200,100);
+text( "Directions: Hit all squares with shooter",width/2-600,350);
+text ("PRESS SPACE BAR TO CONTINUE",width/2-450,500);
+  }
+  else if  (running == 2) {      //do these things for level 1
     println("There are " + gridOfEnemies.size() + " enemies");
     //move and display the enemies
     background(0);
