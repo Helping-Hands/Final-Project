@@ -21,14 +21,13 @@ void setup() {
 void draw() {
   textFont(font, 32);
   fill(0, 255, 85);
-  textSize(150);
-  text("START", 490, 425);
-  textSize(65);
-  text("Shape Invaders", 448, 520);
-  
+  textSize(100);
+  text("Shape Invaders", 280, 425);
+  textSize (24);
+  text("PRESS SPACE BAR TO CONTINUE" ,525, 485);
   noStroke();
-fill(0,0,20,20);
-rect(0,0,width,height);
+  fill(0,0,20,20);
+  rect(0,0,width,height);
 
   for (int i = 0; i < count; i++) {  
 
