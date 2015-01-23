@@ -29,12 +29,6 @@ void drawGradient(float x, float y) {
     h = (h + 1) % 360;
     textSize (60);
     text ("CLICK HERE TO TRY AGAIN", 325,490);
-  }
-void mouseClicked () {
-  if (value ==0 ){
-    value = 255;
-  } else {
-    value = 0 ;
-  }
 }
+
 
