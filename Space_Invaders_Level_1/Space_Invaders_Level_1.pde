@@ -73,62 +73,61 @@ void setup() {
 void draw() {
   //draw start screen
   if (running == 0) {
-  textFont(font, 32);
-  fill(0, 255, 85);
-  textSize(100);
-  text("Shape Invaders", 280, 425);
-  textSize (24);
-  text("PRESS SPACE BAR TO CONTINUE" ,525, 485);
-  noStroke();
-  fill(0,0,20,20);
-  rect(0,0,width,height);
+    textFont(font, 32);
+    fill(0, 255, 85);
+    textSize(100);
+    text("Shape Invaders", 280, 425);
+    textSize (24);
+    text("PRESS SPACE BAR TO CONTINUE", 525, 485);
+    noStroke();
+    fill(0, 0, 20, 20);
+    rect(0, 0, width, height);
 
-  for (int i = 0; i < count; i++) {  
+    for (int i = 0; i < count; i++) {  
 
-    vel[i].add(acc[i]);
-    loc[i].add(vel[i]);
+      vel[i].add(acc[i]);
+      loc[i].add(vel[i]);
 
 
-    for (int j = 0; j < count; j++) {
-      if (i!=j) {
-        if (loc[i].dist(loc[j]) < sz[i]/2 + sz[j]/2) {
-          if (loc[i].x < loc[j].x) {   
-            vel[i].x = -abs(vel[i].x);
-            vel[j].x = abs(vel[j].x);
-          } else {
-            vel[i].x = abs(vel[i].x);
-            vel[j].x = -abs(vel[j].x);
-          }
-          if (loc[i].y < loc[j].y) {   
-            vel[i].y = -abs(vel[i].y);
-            vel[j].y = abs(vel[j].y);
-          } else {
-            vel[i].y = abs(vel[i].y);
-            vel[j].y = -abs(vel[j].y);
+      for (int j = 0; j < count; j++) {
+        if (i!=j) {
+          if (loc[i].dist(loc[j]) < sz[i]/2 + sz[j]/2) {
+            if (loc[i].x < loc[j].x) {   
+              vel[i].x = -abs(vel[i].x);
+              vel[j].x = abs(vel[j].x);
+            } else {
+              vel[i].x = abs(vel[i].x);
+              vel[j].x = -abs(vel[j].x);
+            }
+            if (loc[i].y < loc[j].y) {   
+              vel[i].y = -abs(vel[i].y);
+              vel[j].y = abs(vel[j].y);
+            } else {
+              vel[i].y = abs(vel[i].y);
+              vel[j].y = -abs(vel[j].y);
+            }
           }
         }
       }
-    }
-    fill(255,255,255,random(50,75 ));
-    ellipse(loc[i].x, loc[i].y, sz[i], sz[i]);
+      fill(255, 255, 255, random(50, 75 ));
+      ellipse(loc[i].x, loc[i].y, sz[i], sz[i]);
 
-    if (loc[i].x + sz[i]/2 > width || loc[i].x - sz[i]/2 < 0) {
-      vel[i].x *= -1;
+      if (loc[i].x + sz[i]/2 > width || loc[i].x - sz[i]/2 < 0) {
+        vel[i].x *= -1;
+      }
+      if (loc[i].y + sz[i]/2 > height || loc[i].y - sz[i]/2 < 0) {
+        vel[i].y *= -1;
+      }
     }
-    if (loc[i].y + sz[i]/2 > height || loc[i].y - sz[i]/2 < 0) {
-      vel[i].y *= -1;
-    }
-  }
-////////////draw for direction screen   
-  }else if  (running == 1) {
+    ////////////draw for direction screen
+  } else if  (running == 1) {
     background(0);
-textSize (50);
-text (" Level One",width/2-200,200);
-fill (0,200,100);
-text( "Directions: Hit all squares with shooter",width/2-600,350);
-text ("PRESS SPACE BAR TO CONTINUE",width/2-450,470);
-  }
-  else if  (running == 2) {      //do these things for level 1
+    textSize (50);
+    text (" Level One", width/2-200, 200);
+    fill (0, 200, 100);
+    text( "Directions: Hit all squares with shooter", width/2-600, 350);
+    text ("PRESS SPACE BAR TO CONTINUE", width/2-450, 470);
+  } else if  (running == 2) {      //do these things for level 1
     println("There are " + gridOfEnemies.size() + " enemies");
     //move and display the enemies
     background(0);
@@ -152,9 +151,6 @@ text ("PRESS SPACE BAR TO CONTINUE",width/2-450,470);
           bullets.remove(j);
           //check if it's a square enemy
           if (e.square==true) {
-
-
-
             //find row of enemy that was just removed
             int justRemoved = e.row;
             //remove enemy that was hit
@@ -167,69 +163,29 @@ text ("PRESS SPACE BAR TO CONTINUE",width/2-450,470);
         }
       }
     }
-
-    //display shooter, aim, stayOnScreen
-    shooter.display();
-    shooter.aim();
-    shooter.stayOnScreen();
-    //display bullets, move, is dead
-    for (int j = bullets.size ()-1; j >= 0; j--) {
-      Bullet b = bullets.get(j);
-      b.display();
-      b.move();
-      b.isDead();
-    }
-  }  //end code for level 1
-}
-if(running==3){
-  println("There are " + gridOfEnemies.size() + " enemies");
-    //move and display the enemies
-    background(0);
-    //if shooter makes mistake, mistake=true, enemies speed up
-    if (dunGoofed==true) {
-      enemySpeed+=.1;
-      dunGoofed=false;
-    }
-
-    //drawing the enemies in a grid
-    //display and move enemies
-    for (int i= 0; i < gridOfEnemies.size (); i++) {
-      Enemy e=gridOfEnemies.get(i);
-      e.display();
-      e.move(enemySpeed);
-      //checks each bullet, sees if any bullet hits an enemy
-      for (int j = bullets.size ()-1; j >= 0; j--) {
-        Bullet b = bullets.get(j);
-        if (e.dies(b)) {
-          //remove bullet that just hit enemy
-          bullets.remove(j);
-          //check if it's a square enemy
-          if (e.circle==true) {
-            //find row of enemy that was just removed
-            int justRemoved = e.row;
-            //remove enemy that was hit
-            gridOfEnemies.remove(i);
-            println("Time to check for survivors:");
-            checkForSurvivors(justRemoved);
-          } else {
-            dunGoofed=true;
-          }
-        }
-      }
-    }
-
-    //display shooter, aim, stayOnScreen
-    shooter.display();
-    shooter.aim();
-    shooter.stayOnScreen();
-    //display bullets, move, is dead
-    for (int j = bullets.size ()-1; j >= 0; j--) {
-      Bullet b = bullets.get(j);
-      b.display();
-      b.move();
-      b.isDead();
-    }
+  } else if (running==3) { //level 2 directions
+    background (0);
+    textSize (50);
+    text (" Level Two", width/2-200, 200);
+    fill (0, 200, 100);
+    text( "Directions: Hit all circles with shooter", width/2-600, 350);
+    text("PRESS SPACE BAR TO CONTINUE", width/2-450, 470);
+  }
+  //end of level 2 directions
+  //display shooter, aim, stayOnScreen
+  shooter.display();
+  shooter.aim();
+  shooter.stayOnScreen();
+  //display bullets, move, is dead
+  for (int j = bullets.size ()-1; j >= 0; j--) {
+    Bullet b = bullets.get(j);
+    b.display();
+    b.move();
+    b.isDead();
+  }
 }  //end code for level 1
+
+
 
 
 
@@ -242,13 +198,24 @@ void keyPressed() {
       running = 2;
     } else if (running == 2) {
       bullets.add(new Bullet(shooter));
+      //    } else if(running==3){
+      //      running = 4;
+    } 
+//    if (running == 2) {
+//      if (e.gridOfEnemies.sz=0) {
+//        running= 3;
+//      }
+//    }
+  }
+  if (key == 'c') {
+    if (running==2) {
+      running=3;
     }
   }
 }
 
-//if(no square enemies left in row){
-//  remove.row;
-// }
+
+
 void checkForSurvivors(int rowToCheck) {
   println("There are a total of " + gridOfEnemies.size() + " enemies");
   println("Checking for survivors now in row " + rowToCheck);

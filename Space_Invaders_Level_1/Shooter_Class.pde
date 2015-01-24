@@ -53,7 +53,3 @@ class Shooter {
   }
 }
 
-//void dies(){
-//  if(gridOfEnemies touches shooter){
-  //goes to GAME OVER screen
-
