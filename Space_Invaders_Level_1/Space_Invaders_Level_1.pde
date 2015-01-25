@@ -66,6 +66,7 @@ void setup() {
   //declare new shooter
   shooter=new Shooter();
 }
+
 void draw() {
   //draw start screen
   if (running == 0) {
@@ -169,8 +170,10 @@ void draw() {
       b.display();
       b.move();
       b.isDead();
-    } //end of level 1 directions
-  } else if (running==3) { //level 2 directions
+    }
+  }
+  //end of level 1 directions
+  else if (running==3) { //level 2 directions
     background (0);
     textSize (50);
     text (" Level Two", width/2-200, 200);
@@ -218,74 +221,118 @@ void draw() {
       b.move();
       b.isDead();
     }
+  } else if (running ==5) {
+    background (0);
+    textSize (50);
+    text (" Level Three", width/2-200, 200);
+    fill (0, 200, 100);
+    text( "Directions: Hit all triangles with shooter", width/2-600, 350);
+    text("PRESS SPACE BAR TO CONTINUE", width/2-450, 470);
+  } else if (running ==6) {
+    background(0);
+    for (int i= 0; i < gridOfEnemies.size (); i++) {
+      Enemy e=gridOfEnemies.get(i);
+      e.display();
+      e.move(enemySpeed);
+      //checks each bullet, sees if any bullet hits an enemy
+      for (int j = bullets.size ()-1; j >= 0; j--) {
+        Bullet b = bullets.get(j);
+        if (e.dies(b)) {
+          //remove bullet that just hit enemy
+          bullets.remove(j);
+          //check if it's a square enemy
+          if (e.triangle==true) {
+            //find row of enemy that was just removed
+            int justRemoved = e.row;
+            //remove enemy that was hit
+            gridOfEnemies.remove(i);
+            println("Time to check for survivors:");
+            checkForSurvivors(justRemoved);
+          } else {
+            dunGoofed=true;
+          }
+        }
+      }
+    }
+    //display shooter, aim, stayOnScreen
+    shooter.display();
+    shooter.aim();
+    shooter.stayOnScreen();
+    //display bullets, move, is dead
+    for (int j = bullets.size ()-1; j >= 0; j--) {
+      Bullet b = bullets.get(j);
+      b.display();
+      b.move();
+      b.isDead();
+    }
   }
 }
 
 
 
 
-  //if space bar is pressed, add more bullets
-  void keyPressed() {
-    if (key == ' ') {
-      if (running == 0) {
-        running= 1;
-      } else if (running == 1) {
-        running = 2;
-      } else if (running == 2) {
-        bullets.add(new Bullet(shooter));
-        //    } else if(running==3){
-        //      running = 4;
-      } 
-      //    if (running == 2) {
-      //      if (e.gridOfEnemies.sz=0) {
-      //        running= 3;
-      //      }
-      //    }
-      else if(running == 3){
-        running =4;
-      } else if(running ==4){
-        bullets.add(new Bullet(shooter));
-    }
-    }
-    if (key == 'c') {
-      if (running==2) {
-        running=3;
-      }
+//if space bar is pressed, add more bullets
+void keyPressed() {
+  if (key == ' ') {
+    if (running == 0) {
+      running= 1;
+    } else if (running == 1) {
+      running = 2;
+    } else if (running == 2) {
+      bullets.add(new Bullet(shooter));
+    } else if (running == 3) {
+      running = 4;
+    } else if (running ==4) {
+      bullets.add(new Bullet(shooter));
+    } else if (running==5) {
+      running=6;
+    } else if (running==6) {
+      bullets.add(new Bullet(shooter));
     }
   }
+  if (key == 'c') {
+    if (running==2) {
+      running=3;
+    }
+    if (running==4) {
+      running=5;
+    }
+  }
+}
 
 
 
-  void checkForSurvivors(int rowToCheck) {
-    println("There are a total of " + gridOfEnemies.size() + " enemies");
-    println("Checking for survivors now in row " + rowToCheck);
-    //declare areThereAnyLeft as flase
-    boolean areThereAnyLeft = false;
 
-    //for grid of enemies just hit
-    for (int k = gridOfEnemies.size ()-1; k >= 0; k--) {
-      //declare otherEnemy in rows
+void checkForSurvivors(int rowToCheck) {
+  println("There are a total of " + gridOfEnemies.size() + " enemies");
+  println("Checking for survivors now in row " + rowToCheck);
+  //declare areThereAnyLeft as flase
+  boolean areThereAnyLeft = false;
+
+  //for grid of enemies just hit
+  for (int k = gridOfEnemies.size ()-1; k >= 0; k--) {
+    //declare otherEnemy in rows
+    Enemy otherEnemy = gridOfEnemies.get(k);
+    //if otherEnemy is a square
+    if (otherEnemy.square==true) {
+      if (otherEnemy.row==rowToCheck) {
+        areThereAnyLeft=true;
+        //                  so don't do anything
+      }
+    }
+  } //now that this for loop is over, we know whether or not there are any squares left in the row we just removed from
+  println("We checked, and it is " + areThereAnyLeft + " that there are survivors");
+  if (areThereAnyLeft==false) {
+    println("Time to cull the unnecessary ones in row " + rowToCheck);
+    for (int k = 0; k < gridOfEnemies.size (); k++) {
+
       Enemy otherEnemy = gridOfEnemies.get(k);
-      //if otherEnemy is a square
-      if (otherEnemy.square==true) {
-        if (otherEnemy.row==rowToCheck) {
-          areThereAnyLeft=true;
-          //                  so don't do anything
-        }
-      }
-    } //now that this for loop is over, we know whether or not there are any squares left in the row we just removed from
-    println("We checked, and it is " + areThereAnyLeft + " that there are survivors");
-    if (areThereAnyLeft==false) {
-      println("Time to cull the unnecessary ones in row " + rowToCheck);
-      for (int k = 0; k < gridOfEnemies.size (); k++) {
-
-        Enemy otherEnemy = gridOfEnemies.get(k);
-        println("Checking enemy " + k + " now and it is in row " + otherEnemy.row);
-        if (otherEnemy.row == rowToCheck) {
-          gridOfEnemies.remove(k);
-          println("Removing one now");
-        }
+      println("Checking enemy " + k + " now and it is in row " + otherEnemy.row);
+      if (otherEnemy.row == rowToCheck) {
+        gridOfEnemies.remove(k);
+        println("Removing one now");
       }
     }
   }
+}
 
