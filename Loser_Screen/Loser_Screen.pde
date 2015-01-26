@@ -1,8 +1,8 @@
-int dim;
+
 int value = 0;
 void setup() {
   size(displayWidth, displayHeight);
-  dim = width/2;
+
   background(0);
   colorMode(HSB, 360, 100, 100);
   noStroke();
@@ -13,7 +13,7 @@ void setup() {
 
 void draw() {
   background(0);
-  for (int x = 0; x <= width; x+=dim) {
+  for (int x = 0; x <= width; x++) {
     drawGradient(x, height/2);
   } 
 }
