@@ -10,7 +10,6 @@ float[] sz = new float[count];
 float spin = 0.0;
 
 /////////Declare variables for loser screen////////
-int dim;
 int value = 0;
 
 ////////////////Declare variables for Game///////////////////
@@ -30,10 +29,13 @@ float enemySpeed=1;
 boolean dunGoofed=false;
 //running variable determines which stage to show
 int running = 0;
-
+boolean gameOver = false;
 /////////Declare variables for    ////////////////
 
 void setup() {
+  if (gameOver) {
+    running = 8;
+  }
   ////////setup for start screen
   if (running == 0) {
     size(displayWidth, displayHeight);
@@ -57,7 +59,6 @@ void setup() {
       acc[i] = new PVector(0, 0);
     }
   } else if (running==8) {
-    dim = width/2;
     background(0);
     colorMode(HSB, 360, 100, 100);
     noStroke();
@@ -74,19 +75,7 @@ void setup() {
   //size of screen
   size(displayWidth, displayHeight);
   //put all enemies into a grid of 5 by 10
-  for (int x=0; x<columns; x++) {
-    for (int y=0; y<rows; y++) {
-      float r = random(1);
-      //randomly insert square, round, triangle enemies
-      if (r < .33) {
-        gridOfEnemies.add(new SquareEnemy(10+x*eSpacing, 10+y*eSpacing, y));
-      } else if (r < .66) {
-        gridOfEnemies.add(new RoundEnemy(10+x*eSpacing, 10+y*eSpacing, y));
-      } else {
-        gridOfEnemies.add(new TriEnemy(10+x*eSpacing, 10+y*eSpacing, y));
-      }
-    }
-  }
+  reset();
   //declare new shooter
   shooter=new Shooter();
 }
@@ -149,7 +138,7 @@ void draw() {
     text( "Directions: Hit all squares with shooter", width/2-600, 350);
     text ("PRESS SPACE BAR TO CONTINUE", width/2-450, 470);
   } else if  (running == 2) {      //do these things for level 1
-    println("There are " + gridOfEnemies.size() + " enemies");
+    //    println("There are " + gridOfEnemies.size() + " enemies");
     //move and display the enemies
     background(0);
     //if shooter makes mistake, mistake=true, enemies speed up
@@ -165,205 +154,210 @@ void draw() {
       e.display();
       e.move(enemySpeed);
       if (e.isTouchingBottom()==true) {
-        running=8;
+        println("Cower, puny mortals! Running has a value of: " + running);
+        running = 8;
+        println("And running is now " + running);
+        colorMode(HSB,360,100,100,100);
       }
-    
-    //checks each bullet, sees if any bullet hits an enemy
-    for (int j = bullets.size ()-1; j >= 0; j--) {
-      Bullet b = bullets.get(j);
-      if (e.dies(b)) {
-        //remove bullet that just hit enemy
-        bullets.remove(j);
-        //check if it's a square enemy
-        if (e.square==true) {
-          //find row of enemy that was just removed
-          int justRemoved = e.row;
-          //remove enemy that was hit
-          gridOfEnemies.remove(i);
-          println("Time to check for survivors:");
-          checkForSurvivors(justRemoved);
-        } else {
-          dunGoofed=true;
-        }
-      }
-    }
-  }
-  //display shooter, aim, stayOnScreen
-  shooter.display();
-  shooter.aim();
-  shooter.stayOnScreen();
-  //display bullets, move, is dead
-  for (int j = bullets.size ()-1; j >= 0; j--) {
-    Bullet b = bullets.get(j);
-    b.display();
-    b.move();
-    b.isDead();
-  }
-}
-//end of level 1 directions
-else if (running==3) { //level 2 directions
-  background (0);
-  textSize (50);
-  text (" Level Two", width/2-200, 200);
-  fill (0, 200, 100);
-  text( "Directions: Hit all circles with shooter", width/2-600, 350);
-  text("PRESS SPACE BAR TO CONTINUE", width/2-450, 470);
-} else if (running==4) {
-  //end of level 2 directions
-  /////draw for level 1
-  //drawing the enemies in a grid
-  //display and move enemies
-  background(0);
-  for (int i= 0; i < gridOfEnemies.size (); i++) {
-    Enemy e=gridOfEnemies.get(i);
-    e.display();
-    e.move(enemySpeed);
-    if (e.isTouchingBottom()==true) {
-        running=8;
-    }
-    //checks each bullet, sees if any bullet hits an enemy
-    for (int j = bullets.size ()-1; j >= 0; j--) {
-      Bullet b = bullets.get(j);
-      if (e.dies(b)) {
-        //remove bullet that just hit enemy
-        bullets.remove(j);
-        //check if it's a square enemy
-        if (e.circle==true) {
-          //find row of enemy that was just removed
-          int justRemoved = e.row;
-          //remove enemy that was hit
-          gridOfEnemies.remove(i);
-          println("Time to check for survivors:");
-          checkForSurvivors(justRemoved);
-        } else {
-          dunGoofed=true;
-        }
-      }
-    }
-  }
-  //display shooter, aim, stayOnScreen
-  shooter.display();
-  shooter.aim();
-  shooter.stayOnScreen();
-  //display bullets, move, is dead
-  for (int j = bullets.size ()-1; j >= 0; j--) {
-    Bullet b = bullets.get(j);
-    b.display();
-    b.move();
-    b.isDead();
-  }
-} else if (running ==5) {
-  background (0);
-  textSize (50);
-  text (" Level Three", width/2-200, 200);
-  fill (0, 200, 100);
-  text( "Directions: Hit all triangles with shooter", width/2-600, 350);
-  text("PRESS SPACE BAR TO CONTINUE", width/2-450, 470);
-} else if (running ==6) {
-  background(0);
-  for (int i= 0; i < gridOfEnemies.size (); i++) {
-    Enemy e=gridOfEnemies.get(i);
-    e.display();
-    e.move(enemySpeed);
-    if (e.isTouchingBottom()==true) {
-        running=8;
-    }
-    //checks each bullet, sees if any bullet hits an enemy
-    for (int j = bullets.size ()-1; j >= 0; j--) {
-      Bullet b = bullets.get(j);
-      if (e.dies(b)) {
-        //remove bullet that just hit enemy
-        bullets.remove(j);
-        //check if it's a square enemy
-        if (e.triangle==true) {
-          //find row of enemy that was just removed
-          int justRemoved = e.row;
-          //remove enemy that was hit
-          gridOfEnemies.remove(i);
-          println("Time to check for survivors:");
-          checkForSurvivors(justRemoved);
-        } else {
-          dunGoofed=true;
-        }
-      }
-    }
-  }
-  //display shooter, aim, stayOnScreen
-  shooter.display();
-  shooter.aim();
-  shooter.stayOnScreen();
-  //display bullets, move, is dead
-  for (int j = bullets.size ()-1; j >= 0; j--) {
-    Bullet b = bullets.get(j);
-    b.display();
-    b.move();
-    b.isDead();
-  }
-} else if (running==7) {
-  background(0);
-  noStroke();
 
-  pushMatrix();
-
-  translate(width/2, height/2-300, 0);
-  spin +=0.009;
-  rotateX(PI/10);
-  rotateY(PI/20 + spin);
-  textFont(font, 22);
-  fill(0, 80, 85);
-  textSize(150);
-  noStroke();
-  text("WINNER", 200, 125);
-  textSize(65);
-  text("THE END ", 268, 220);
-  noStroke();
-  popMatrix();
-
-
-  fill(0, 0, 20, 20);
-  rect(0, 0, width, height);
-  for (int i = 0; i < count; i++) {  
-
-    vel[i].add(acc[i]);
-    loc[i].add(vel[i]);
-
-
-    for (int j = 0; j < count; j++) {
-      if (i!=j) {
-        if (loc[i].dist(loc[j]) < sz[i]/2 + sz[j]/2) {
-          if (loc[i].x < loc[j].x) {   
-            vel[i].x = -abs(vel[i].x);
-            vel[j].x = abs(vel[j].x);
+      //checks each bullet, sees if any bullet hits an enemy
+      for (int j = bullets.size ()-1; j >= 0; j--) {
+        Bullet b = bullets.get(j);
+        if (e.dies(b)) {
+          //remove bullet that just hit enemy
+          bullets.remove(j);
+          //check if it's a square enemy
+          if (e.square==true) {
+            //find row of enemy that was just removed
+            int justRemoved = e.row;
+            //remove enemy that was hit
+            gridOfEnemies.remove(i);
+            println("Time to check for survivors:");
+            checkForSurvivors(justRemoved);
           } else {
-            vel[i].x = abs(vel[i].x);
-            vel[j].x = -abs(vel[j].x);
-          }
-          if (loc[i].y < loc[j].y) {   
-            vel[i].y = -abs(vel[i].y);
-            vel[j].y = abs(vel[j].y);
-          } else {
-            vel[i].y = abs(vel[i].y);
-            vel[j].y = -abs(vel[j].y);
+            dunGoofed=true;
           }
         }
       }
     }
-    fill(255, 255, 255, random(50, 75 ));
-    ellipse(loc[i].x, loc[i].y, sz[i], sz[i]);
+    //display shooter, aim, stayOnScreen
+    shooter.display();
+    shooter.aim();
+    shooter.stayOnScreen();
+    //display bullets, move, is dead
+    for (int j = bullets.size ()-1; j >= 0; j--) {
+      Bullet b = bullets.get(j);
+      b.display();
+      b.move();
+      b.isDead();
+    }
+  }
+  //end of level 1 directions
+  else if (running==3) { //level 2 directions
+    background (0);
+    textSize (50);
+    text (" Level Two", width/2-200, 200);
+    fill (0, 200, 100);
+    text( "Directions: Hit all circles with shooter", width/2-600, 350);
+    text("PRESS SPACE BAR TO CONTINUE", width/2-450, 470);
+  } else if (running==4) {
+    //end of level 2 directions
+    /////draw for level 1
+    //drawing the enemies in a grid
+    //display and move enemies
+    background(0);
+    for (int i= 0; i < gridOfEnemies.size (); i++) {
+      Enemy e=gridOfEnemies.get(i);
+      e.display();
+      e.move(enemySpeed);
+      if (e.isTouchingBottom()==true) {
+        //        running=8;
+        print("I have reached the bottom! Die, puny mortals!");
+      }
+      //checks each bullet, sees if any bullet hits an enemy
+      for (int j = bullets.size ()-1; j >= 0; j--) {
+        Bullet b = bullets.get(j);
+        if (e.dies(b)) {
+          //remove bullet that just hit enemy
+          bullets.remove(j);
+          //check if it's a square enemy
+          if (e.circle==true) {
+            //find row of enemy that was just removed
+            int justRemoved = e.row;
+            //remove enemy that was hit
+            gridOfEnemies.remove(i);
+            println("Time to check for survivors:");
+            checkForSurvivors(justRemoved);
+          } else {
+            dunGoofed=true;
+          }
+        }
+      }
+    }
+    //display shooter, aim, stayOnScreen
+    shooter.display();
+    shooter.aim();
+    shooter.stayOnScreen();
+    //display bullets, move, is dead
+    for (int j = bullets.size ()-1; j >= 0; j--) {
+      Bullet b = bullets.get(j);
+      b.display();
+      b.move();
+      b.isDead();
+    }
+  } else if (running ==5) {
+    background (0);
+    textSize (50);
+    text (" Level Three", width/2-200, 200);
+    fill (0, 200, 100);
+    text( "Directions: Hit all triangles with shooter", width/2-600, 350);
+    text("PRESS SPACE BAR TO CONTINUE", width/2-450, 470);
+  } else if (running ==6) {
+    background(0);
+    for (int i= 0; i < gridOfEnemies.size (); i++) {
+      Enemy e=gridOfEnemies.get(i);
+      e.display();
+      e.move(enemySpeed);
+      if (e.isTouchingBottom()==true) {
+        running=8;
+      }
+      //checks each bullet, sees if any bullet hits an enemy
+      for (int j = bullets.size ()-1; j >= 0; j--) {
+        Bullet b = bullets.get(j);
+        if (e.dies(b)) {
+          //remove bullet that just hit enemy
+          bullets.remove(j);
+          //check if it's a square enemy
+          if (e.triangle==true) {
+            //find row of enemy that was just removed
+            int justRemoved = e.row;
+            //remove enemy that was hit
+            gridOfEnemies.remove(i);
+            println("Time to check for survivors:");
+            checkForSurvivors(justRemoved);
+          } else {
+            dunGoofed=true;
+          }
+        }
+      }
+    }
+    //display shooter, aim, stayOnScreen
+    shooter.display();
+    shooter.aim();
+    shooter.stayOnScreen();
+    //display bullets, move, is dead
+    for (int j = bullets.size ()-1; j >= 0; j--) {
+      Bullet b = bullets.get(j);
+      b.display();
+      b.move();
+      b.isDead();
+    }
+  } else if (running==7) {
+    background(0);
+    noStroke();
 
-    if (loc[i].x + sz[i]/2 > width || loc[i].x - sz[i]/2 < 0) {
-      vel[i].x *= -1;
+    pushMatrix();
+
+    translate(width/2, height/2-300, 0);
+    spin +=0.009;
+    rotateX(PI/10);
+    rotateY(PI/20 + spin);
+    textFont(font, 22);
+    fill(0, 80, 85);
+    textSize(150);
+    noStroke();
+    text("WINNER", 200, 125);
+    textSize(65);
+    text("THE END ", 268, 220);
+    noStroke();
+    popMatrix();
+
+
+    fill(0, 0, 20, 20);
+    rect(0, 0, width, height);
+    for (int i = 0; i < count; i++) {  
+
+      vel[i].add(acc[i]);
+      loc[i].add(vel[i]);
+
+
+      for (int j = 0; j < count; j++) {
+        if (i!=j) {
+          if (loc[i].dist(loc[j]) < sz[i]/2 + sz[j]/2) {
+            if (loc[i].x < loc[j].x) {   
+              vel[i].x = -abs(vel[i].x);
+              vel[j].x = abs(vel[j].x);
+            } else {
+              vel[i].x = abs(vel[i].x);
+              vel[j].x = -abs(vel[j].x);
+            }
+            if (loc[i].y < loc[j].y) {   
+              vel[i].y = -abs(vel[i].y);
+              vel[j].y = abs(vel[j].y);
+            } else {
+              vel[i].y = abs(vel[i].y);
+              vel[j].y = -abs(vel[j].y);
+            }
+          }
+        }
+      }
+      fill(255, 255, 255, random(50, 75 ));
+      ellipse(loc[i].x, loc[i].y, sz[i], sz[i]);
+
+      if (loc[i].x + sz[i]/2 > width || loc[i].x - sz[i]/2 < 0) {
+        vel[i].x *= -1;
+      }
+      if (loc[i].y + sz[i]/2 > height || loc[i].y - sz[i]/2 < 0) {
+        vel[i].y *= -1;
+      }
     }
-    if (loc[i].y + sz[i]/2 > height || loc[i].y - sz[i]/2 < 0) {
-      vel[i].y *= -1;
+  } else if (running==8) {
+    println("Entering level 8 now");
+    background(0);
+    for (int x = 0; x <= width; x++) {
+      drawGradient(x, height/2);
     }
   }
-} else if (running==8) {
-  background(0);
-  for (int x = 0; x <= width; x+=dim) {
-    drawGradient(x, height/2);
-  }
-}
 }
 
 
@@ -376,14 +370,17 @@ void keyPressed() {
       running= 1;
     } else if (running == 1) {
       running = 2;
+      reset();
     } else if (running == 2) {
       bullets.add(new Bullet(shooter));
     } else if (running == 3) {
       running = 4;
+      reset();
     } else if (running ==4) {
       bullets.add(new Bullet(shooter));
     } else if (running==5) {
       running=6;
+      reset();
     } else if (running==6) {
       bullets.add(new Bullet(shooter));
     }
@@ -401,7 +398,22 @@ void keyPressed() {
   }
 }
 
-
+void reset() {
+  gridOfEnemies= new ArrayList<Enemy>();
+  for (int x=0; x<columns; x++) {
+    for (int y=0; y<rows; y++) {
+      float r = random(1);
+      //randomly insert square, round, triangle enemies
+      if (r < .33) {
+        gridOfEnemies.add(new SquareEnemy(10+x*eSpacing, 10+y*eSpacing, y));
+      } else if (r < .66) {
+        gridOfEnemies.add(new RoundEnemy(10+x*eSpacing, 10+y*eSpacing, y));
+      } else {
+        gridOfEnemies.add(new TriEnemy(10+x*eSpacing, 10+y*eSpacing, y));
+      }
+    }
+  }
+}
 
 void checkForSurvivors(int rowToCheck) {
   println("There are a total of " + gridOfEnemies.size() + " enemies");

@@ -20,8 +20,8 @@ class Enemy {
   //still have to have void display for the general Enemy class
   void display() {
   }
-  boolean isTouchingBottom(){
-    if(loc.y>height){
+  boolean isTouchingBottom() {
+    if (loc.y>height) {
       return true;
     } else {
       return false;
@@ -56,7 +56,6 @@ class SquareEnemy extends Enemy {
     square=true;
     circle=false;
     triangle=false;
-    
   }
   //display square enemy
   void display() {
