@@ -7,16 +7,25 @@ class Enemy {
   boolean circle;
   boolean triangle;
   int row;
+  boolean isTouchingBottom;
   //float speed;
   //what an enemy needs, location and size
   Enemy(float x, float y, int tempRow) {
     loc = new PVector(x, y);
     sz=20;
     row = tempRow;
+    isTouchingBottom=false;
     //    speed=1;
   }
   //still have to have void display for the general Enemy class
   void display() {
+  }
+  boolean isTouchingBottom(){
+    if(loc.y>height){
+      return true;
+    } else {
+      return false;
+    }
   }
   //how all enemies will move
   void move(float speed) {

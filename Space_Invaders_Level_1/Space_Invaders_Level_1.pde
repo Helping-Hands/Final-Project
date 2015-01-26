@@ -9,6 +9,10 @@ float[] sz = new float[count];
 /////////Declare other variable for Winner Screen
 float spin = 0.0;
 
+/////////Declare variables for loser screen////////
+int dim;
+int value = 0;
+
 ////////////////Declare variables for Game///////////////////
 //drawing an array of enemies
 ArrayList<Enemy> gridOfEnemies= new ArrayList<Enemy>();
@@ -52,6 +56,14 @@ void setup() {
       vel[i] = new PVector(0, random(0, 5));       
       acc[i] = new PVector(0, 0);
     }
+  } else if (running==8) {
+    dim = width/2;
+    background(0);
+    colorMode(HSB, 360, 100, 100);
+    noStroke();
+    ellipseMode(RADIUS);
+    frameRate(1);
+    textMode (CENTER);
   }
   ////////////Setup for level 1
   //checkForSurvivors(0);
@@ -152,191 +164,206 @@ void draw() {
       Enemy e=gridOfEnemies.get(i);
       e.display();
       e.move(enemySpeed);
-      //checks each bullet, sees if any bullet hits an enemy
-      for (int j = bullets.size ()-1; j >= 0; j--) {
-        Bullet b = bullets.get(j);
-        if (e.dies(b)) {
-          //remove bullet that just hit enemy
-          bullets.remove(j);
-          //check if it's a square enemy
-          if (e.square==true) {
-            //find row of enemy that was just removed
-            int justRemoved = e.row;
-            //remove enemy that was hit
-            gridOfEnemies.remove(i);
-            println("Time to check for survivors:");
-            checkForSurvivors(justRemoved);
-          } else {
-            dunGoofed=true;
-          }
-        }
+      if (e.isTouchingBottom()==true) {
+        running=8;
       }
-    }
-    //display shooter, aim, stayOnScreen
-    shooter.display();
-    shooter.aim();
-    shooter.stayOnScreen();
-    //display bullets, move, is dead
+    
+    //checks each bullet, sees if any bullet hits an enemy
     for (int j = bullets.size ()-1; j >= 0; j--) {
       Bullet b = bullets.get(j);
-      b.display();
-      b.move();
-      b.isDead();
-    }
-  }
-  //end of level 1 directions
-  else if (running==3) { //level 2 directions
-    background (0);
-    textSize (50);
-    text (" Level Two", width/2-200, 200);
-    fill (0, 200, 100);
-    text( "Directions: Hit all circles with shooter", width/2-600, 350);
-    text("PRESS SPACE BAR TO CONTINUE", width/2-450, 470);
-  } else if (running==4) {
-    //end of level 2 directions
-    /////draw for level 1
-    //drawing the enemies in a grid
-    //display and move enemies
-    background(0);
-    for (int i= 0; i < gridOfEnemies.size (); i++) {
-      Enemy e=gridOfEnemies.get(i);
-      e.display();
-      e.move(enemySpeed);
-      //checks each bullet, sees if any bullet hits an enemy
-      for (int j = bullets.size ()-1; j >= 0; j--) {
-        Bullet b = bullets.get(j);
-        if (e.dies(b)) {
-          //remove bullet that just hit enemy
-          bullets.remove(j);
-          //check if it's a square enemy
-          if (e.circle==true) {
-            //find row of enemy that was just removed
-            int justRemoved = e.row;
-            //remove enemy that was hit
-            gridOfEnemies.remove(i);
-            println("Time to check for survivors:");
-            checkForSurvivors(justRemoved);
-          } else {
-            dunGoofed=true;
-          }
+      if (e.dies(b)) {
+        //remove bullet that just hit enemy
+        bullets.remove(j);
+        //check if it's a square enemy
+        if (e.square==true) {
+          //find row of enemy that was just removed
+          int justRemoved = e.row;
+          //remove enemy that was hit
+          gridOfEnemies.remove(i);
+          println("Time to check for survivors:");
+          checkForSurvivors(justRemoved);
+        } else {
+          dunGoofed=true;
         }
-      }
-    }
-    //display shooter, aim, stayOnScreen
-    shooter.display();
-    shooter.aim();
-    shooter.stayOnScreen();
-    //display bullets, move, is dead
-    for (int j = bullets.size ()-1; j >= 0; j--) {
-      Bullet b = bullets.get(j);
-      b.display();
-      b.move();
-      b.isDead();
-    }
-  } else if (running ==5) {
-    background (0);
-    textSize (50);
-    text (" Level Three", width/2-200, 200);
-    fill (0, 200, 100);
-    text( "Directions: Hit all triangles with shooter", width/2-600, 350);
-    text("PRESS SPACE BAR TO CONTINUE", width/2-450, 470);
-  } else if (running ==6) {
-    background(0);
-    for (int i= 0; i < gridOfEnemies.size (); i++) {
-      Enemy e=gridOfEnemies.get(i);
-      e.display();
-      e.move(enemySpeed);
-      //checks each bullet, sees if any bullet hits an enemy
-      for (int j = bullets.size ()-1; j >= 0; j--) {
-        Bullet b = bullets.get(j);
-        if (e.dies(b)) {
-          //remove bullet that just hit enemy
-          bullets.remove(j);
-          //check if it's a square enemy
-          if (e.triangle==true) {
-            //find row of enemy that was just removed
-            int justRemoved = e.row;
-            //remove enemy that was hit
-            gridOfEnemies.remove(i);
-            println("Time to check for survivors:");
-            checkForSurvivors(justRemoved);
-          } else {
-            dunGoofed=true;
-          }
-        }
-      }
-    }
-    //display shooter, aim, stayOnScreen
-    shooter.display();
-    shooter.aim();
-    shooter.stayOnScreen();
-    //display bullets, move, is dead
-    for (int j = bullets.size ()-1; j >= 0; j--) {
-      Bullet b = bullets.get(j);
-      b.display();
-      b.move();
-      b.isDead();
-    }
-  } else if (running==7) {
-    background(0);
-    noStroke();
-
-    pushMatrix();
-
-    translate(width/2, height/2-300, 0);
-    spin +=0.009;
-    rotateX(PI/10);
-    rotateY(PI/20 + spin);
-    textFont(font, 22);
-    fill(0, 80, 85);
-    textSize(150);
-    noStroke();
-    text("WINNER", 200, 125);
-    textSize(65);
-    text("THE END ", 268, 220);
-    noStroke();
-    popMatrix();
-
-
-    fill(0, 0, 20, 20);
-    rect(0, 0, width, height);
-    for (int i = 0; i < count; i++) {  
-
-      vel[i].add(acc[i]);
-      loc[i].add(vel[i]);
-
-
-      for (int j = 0; j < count; j++) {
-        if (i!=j) {
-          if (loc[i].dist(loc[j]) < sz[i]/2 + sz[j]/2) {
-            if (loc[i].x < loc[j].x) {   
-              vel[i].x = -abs(vel[i].x);
-              vel[j].x = abs(vel[j].x);
-            } else {
-              vel[i].x = abs(vel[i].x);
-              vel[j].x = -abs(vel[j].x);
-            }
-            if (loc[i].y < loc[j].y) {   
-              vel[i].y = -abs(vel[i].y);
-              vel[j].y = abs(vel[j].y);
-            } else {
-              vel[i].y = abs(vel[i].y);
-              vel[j].y = -abs(vel[j].y);
-            }
-          }
-        }
-      }
-      fill(255, 255, 255, random(50, 75 ));
-      ellipse(loc[i].x, loc[i].y, sz[i], sz[i]);
-
-      if (loc[i].x + sz[i]/2 > width || loc[i].x - sz[i]/2 < 0) {
-        vel[i].x *= -1;
-      }
-      if (loc[i].y + sz[i]/2 > height || loc[i].y - sz[i]/2 < 0) {
-        vel[i].y *= -1;
       }
     }
   }
+  //display shooter, aim, stayOnScreen
+  shooter.display();
+  shooter.aim();
+  shooter.stayOnScreen();
+  //display bullets, move, is dead
+  for (int j = bullets.size ()-1; j >= 0; j--) {
+    Bullet b = bullets.get(j);
+    b.display();
+    b.move();
+    b.isDead();
+  }
+}
+//end of level 1 directions
+else if (running==3) { //level 2 directions
+  background (0);
+  textSize (50);
+  text (" Level Two", width/2-200, 200);
+  fill (0, 200, 100);
+  text( "Directions: Hit all circles with shooter", width/2-600, 350);
+  text("PRESS SPACE BAR TO CONTINUE", width/2-450, 470);
+} else if (running==4) {
+  //end of level 2 directions
+  /////draw for level 1
+  //drawing the enemies in a grid
+  //display and move enemies
+  background(0);
+  for (int i= 0; i < gridOfEnemies.size (); i++) {
+    Enemy e=gridOfEnemies.get(i);
+    e.display();
+    e.move(enemySpeed);
+    if (e.isTouchingBottom()==true) {
+        running=8;
+    }
+    //checks each bullet, sees if any bullet hits an enemy
+    for (int j = bullets.size ()-1; j >= 0; j--) {
+      Bullet b = bullets.get(j);
+      if (e.dies(b)) {
+        //remove bullet that just hit enemy
+        bullets.remove(j);
+        //check if it's a square enemy
+        if (e.circle==true) {
+          //find row of enemy that was just removed
+          int justRemoved = e.row;
+          //remove enemy that was hit
+          gridOfEnemies.remove(i);
+          println("Time to check for survivors:");
+          checkForSurvivors(justRemoved);
+        } else {
+          dunGoofed=true;
+        }
+      }
+    }
+  }
+  //display shooter, aim, stayOnScreen
+  shooter.display();
+  shooter.aim();
+  shooter.stayOnScreen();
+  //display bullets, move, is dead
+  for (int j = bullets.size ()-1; j >= 0; j--) {
+    Bullet b = bullets.get(j);
+    b.display();
+    b.move();
+    b.isDead();
+  }
+} else if (running ==5) {
+  background (0);
+  textSize (50);
+  text (" Level Three", width/2-200, 200);
+  fill (0, 200, 100);
+  text( "Directions: Hit all triangles with shooter", width/2-600, 350);
+  text("PRESS SPACE BAR TO CONTINUE", width/2-450, 470);
+} else if (running ==6) {
+  background(0);
+  for (int i= 0; i < gridOfEnemies.size (); i++) {
+    Enemy e=gridOfEnemies.get(i);
+    e.display();
+    e.move(enemySpeed);
+    if (e.isTouchingBottom()==true) {
+        running=8;
+    }
+    //checks each bullet, sees if any bullet hits an enemy
+    for (int j = bullets.size ()-1; j >= 0; j--) {
+      Bullet b = bullets.get(j);
+      if (e.dies(b)) {
+        //remove bullet that just hit enemy
+        bullets.remove(j);
+        //check if it's a square enemy
+        if (e.triangle==true) {
+          //find row of enemy that was just removed
+          int justRemoved = e.row;
+          //remove enemy that was hit
+          gridOfEnemies.remove(i);
+          println("Time to check for survivors:");
+          checkForSurvivors(justRemoved);
+        } else {
+          dunGoofed=true;
+        }
+      }
+    }
+  }
+  //display shooter, aim, stayOnScreen
+  shooter.display();
+  shooter.aim();
+  shooter.stayOnScreen();
+  //display bullets, move, is dead
+  for (int j = bullets.size ()-1; j >= 0; j--) {
+    Bullet b = bullets.get(j);
+    b.display();
+    b.move();
+    b.isDead();
+  }
+} else if (running==7) {
+  background(0);
+  noStroke();
+
+  pushMatrix();
+
+  translate(width/2, height/2-300, 0);
+  spin +=0.009;
+  rotateX(PI/10);
+  rotateY(PI/20 + spin);
+  textFont(font, 22);
+  fill(0, 80, 85);
+  textSize(150);
+  noStroke();
+  text("WINNER", 200, 125);
+  textSize(65);
+  text("THE END ", 268, 220);
+  noStroke();
+  popMatrix();
+
+
+  fill(0, 0, 20, 20);
+  rect(0, 0, width, height);
+  for (int i = 0; i < count; i++) {  
+
+    vel[i].add(acc[i]);
+    loc[i].add(vel[i]);
+
+
+    for (int j = 0; j < count; j++) {
+      if (i!=j) {
+        if (loc[i].dist(loc[j]) < sz[i]/2 + sz[j]/2) {
+          if (loc[i].x < loc[j].x) {   
+            vel[i].x = -abs(vel[i].x);
+            vel[j].x = abs(vel[j].x);
+          } else {
+            vel[i].x = abs(vel[i].x);
+            vel[j].x = -abs(vel[j].x);
+          }
+          if (loc[i].y < loc[j].y) {   
+            vel[i].y = -abs(vel[i].y);
+            vel[j].y = abs(vel[j].y);
+          } else {
+            vel[i].y = abs(vel[i].y);
+            vel[j].y = -abs(vel[j].y);
+          }
+        }
+      }
+    }
+    fill(255, 255, 255, random(50, 75 ));
+    ellipse(loc[i].x, loc[i].y, sz[i], sz[i]);
+
+    if (loc[i].x + sz[i]/2 > width || loc[i].x - sz[i]/2 < 0) {
+      vel[i].x *= -1;
+    }
+    if (loc[i].y + sz[i]/2 > height || loc[i].y - sz[i]/2 < 0) {
+      vel[i].y *= -1;
+    }
+  }
+} else if (running==8) {
+  background(0);
+  for (int x = 0; x <= width; x+=dim) {
+    drawGradient(x, height/2);
+  }
+}
 }
 
 
@@ -407,5 +434,17 @@ void checkForSurvivors(int rowToCheck) {
       }
     }
   }
+} /////////For Loser Screen/////////
+void drawGradient(float x, float y) {
+
+  float h = random(0, 360);
+
+
+  fill(h, 90, 90);
+  textSize (200);
+  text("YOU LOSE", 225, 410);
+  h = (h + 1) % 360;
+  textSize (60);
+  text ("CLICK HERE TO TRY AGAIN", 325, 490);
 }
 
