@@ -1,6 +1,10 @@
 ////CHEAT CODE keyPressed 'c'
 ////PROBLEMS for some reason, no matter what, last row will always level a few enemies behind, but remove some
 ////look in void rowToCheck
+////I had two different methods to win level, neither worked
+///tried to use rowToCheck
+///if you just comment the part out that I make note of, code should work as it's supposed to, just use cheats to move on to next level
+//still problems with cheat (mentioned about, about last row's enemies)
 
 
 ///Declare variables for Start Screen///////////
