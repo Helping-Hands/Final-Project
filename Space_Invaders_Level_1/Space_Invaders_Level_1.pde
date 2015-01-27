@@ -1,5 +1,9 @@
-boolean move=false;
-////////////////Declare variables for Start Screen///////////
+////CHEAT CODE keyPressed 'c'
+////PROBLEMS for some reason, no matter what, last row will always level a few enemies behind, but remove some
+////look in void rowToCheck
+
+
+///Declare variables for Start Screen///////////
 int count =75;
 PFont font;
 PVector[] loc = new PVector[count];
@@ -99,7 +103,6 @@ void setup() {
 }
 
 void draw() {
-  boolean move = false; if(gridOfEnemies.size() == 0 && !move){ running ++; move = true;}
   //draw start screen
   if (running == 0) {
     //text and fill for start screen
@@ -168,7 +171,7 @@ void draw() {
       enemySpeed+=.1;
       dunGoofed=false;
     }
-  //     nextScreen();
+ //      nextScreen();
 
     //drawing the enemies in a grid
     //display and move enemies
@@ -234,7 +237,7 @@ void draw() {
       enemySpeed+=.1;
       dunGoofed=false;
     }
-  //     nextScreen();
+   //    nextScreen();
     //for each enemy, display, and move them
     for (int i= 0; i < gridOfEnemies.size (); i++) {
       Enemy e=gridOfEnemies.get(i);
@@ -487,7 +490,7 @@ void reset() {
 
 /////////I TRIED TO MAKE THIS WORK, IT WASN'T WORKING, IT'S SUPPOSED TO BE THE CODE TO MOVE ON TO NEXT LEVEL ONCE THERE ARE NO ENEMIES LEFT DURING YOUR CURRENT LEVEL
 //void nextScreen(){
-//  if(e.size==0){
+//  if(areThereAnyLeft==false){
 //    running++;
 //  }
 //}
@@ -522,6 +525,13 @@ void checkForSurvivors(int rowToCheck) {
         //remove all the enemies from that row
         gridOfEnemies.remove(k);
  //       println("Removing one now");
+      }
+    }
+    //*******so I tried to make the code basically if the last row doesn't have any enemies left, then move onto next level, has problems though
+    //If you comment this out, it's not going to work perfectly, you'll just have to use cheat to move on
+    if(rowToCheck==4){
+      if(areThereAnyLeft==false){
+        running++;
       }
     }
   }
