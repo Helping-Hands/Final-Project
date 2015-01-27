@@ -1,3 +1,4 @@
+boolean move=false;
 ////////////////Declare variables for Start Screen///////////
 int count =75;
 PFont font;
@@ -98,6 +99,7 @@ void setup() {
 }
 
 void draw() {
+  boolean move = false; if(gridOfEnemies.size() == 0 && !move){ running ++; move = true;}
   //draw start screen
   if (running == 0) {
     //text and fill for start screen
@@ -166,7 +168,7 @@ void draw() {
       enemySpeed+=.1;
       dunGoofed=false;
     }
-       nextScreen();
+  //     nextScreen();
 
     //drawing the enemies in a grid
     //display and move enemies
@@ -232,7 +234,7 @@ void draw() {
       enemySpeed+=.1;
       dunGoofed=false;
     }
-       nextScreen();
+  //     nextScreen();
     //for each enemy, display, and move them
     for (int i= 0; i < gridOfEnemies.size (); i++) {
       Enemy e=gridOfEnemies.get(i);
@@ -295,7 +297,7 @@ void draw() {
       dunGoofed=false;
     }
     
-       nextScreen();
+   //    nextScreen();
     
     //for each enemy, display and move them
     for (int i= 0; i < gridOfEnemies.size (); i++) {
@@ -484,11 +486,11 @@ void reset() {
 }
 
 /////////I TRIED TO MAKE THIS WORK, IT WASN'T WORKING, IT'S SUPPOSED TO BE THE CODE TO MOVE ON TO NEXT LEVEL ONCE THERE ARE NO ENEMIES LEFT DURING YOUR CURRENT LEVEL
-void nextScreen(){
-  if(e.size==0){
-    running++;
-  }
-}
+//void nextScreen(){
+//  if(e.size==0){
+//    running++;
+//  }
+//}
 
 void checkForSurvivors(int rowToCheck) {
 //  println("There are a total of " + gridOfEnemies.size() + " enemies");
