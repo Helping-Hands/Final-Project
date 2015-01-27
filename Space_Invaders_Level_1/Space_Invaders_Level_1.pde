@@ -141,10 +141,12 @@ void draw() {
     //level one directions, text, background
     background(0);
     textSize (50);
-    text (" Level One", width/2-200, 200);
+    text (" Level One", width/2-200, 100);
     fill (0, 200, 100);
-    text( "Directions: Hit all squares with shooter", width/2-600, 350);
-    text ("PRESS SPACE BAR TO CONTINUE", width/2-450, 470);
+    text( "Directions: Hit all squares with shooter", width/2-600, 220);
+    text ("(Press Space Bar To Continue)", width/2-450, 370);
+    text("USE LEFT AND RIGHT ARROW KEYS TO AIM",width/2-550,500);
+    text("USE SPACE BAR TO SHOOT",width/2-350,600);
   } else if  (running == 2) {     
     //do these things for level 1
     background(0);
@@ -209,7 +211,7 @@ void draw() {
     text (" Level Two", width/2-200, 200);
     fill (0, 200, 100);
     text( "Directions: Hit all circles with shooter", width/2-600, 350);
-    text("PRESS SPACE BAR TO CONTINUE", width/2-450, 470);
+    text("(Press Space Bar To Continue)", width/2-450, 470);
   } else if (running==4) { //level 2 draw
     //drawing the enemies in a grid
     //display and move enemies
@@ -272,7 +274,7 @@ void draw() {
     text (" Level Three", width/2-200, 200);
     fill (0, 200, 100);
     text( "Directions: Hit all triangles with shooter", width/2-600, 350);
-    text("PRESS SPACE BAR TO CONTINUE", width/2-450, 470);
+    text("(Press Space Bar To Continue)", width/2-450, 470);
   } else if (running ==6) { //level 3
   //background
     background(0);
