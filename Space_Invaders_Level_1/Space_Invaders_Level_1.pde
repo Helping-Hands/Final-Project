@@ -31,11 +31,22 @@ boolean dunGoofed=false;
 int running = 0;
 boolean gameOver = false;
 
-/////////Declare variables for    ////////////////
-
+/////////Declare variables for Sick Beats (aka instrumental version of new slaves   ////////////////
+import ddf.minim.spi.*;
+import ddf.minim.signals.*;
+import ddf.minim.*;
+import ddf.minim.analysis.*;
+import ddf.minim.ugens.*;
+import ddf.minim.effects.*;
+Minim minim;
+AudioPlayer music;
 
 ////Setup////
 void setup() {
+  ////setup for audio
+  minim = new Minim (this);
+ music = minim.loadFile ("new slaves.mp3");
+ music.loop();
   ///setup for gameOver
   if (gameOver) {
     running = 8;
